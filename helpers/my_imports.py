@@ -3,6 +3,7 @@ sys.path.append('/Users/basilhaddad/jupyter/module17/bank_marketing_repo/')
 import pandas as pd
 import numpy as np
 from IPython.display import display
+from IPython.core.display import HTML
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -47,6 +48,11 @@ from sklearn.metrics import mean_squared_error, accuracy_score, f1_score, recall
 from sklearn.metrics import precision_recall_curve, auc, roc_curve, RocCurveDisplay, log_loss, roc_auc_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 from sklearn.inspection import PartialDependenceDisplay, partial_dependence
+
+from imblearn.pipeline import Pipeline as ImbPipeline
+from imblearn.over_sampling import SMOTE 
+from imblearn.under_sampling import RandomUnderSampler
+from collections import Counter
 
 from sklearn import set_config
 set_config(display="diagram")

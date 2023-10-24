@@ -35,11 +35,31 @@ def tick_magic(param_values, max_ticks, ints=True):
     tick_values = np.arange(min_val, max_val + 1, tick_interval)
     return tick_values
 
-#displot is good for multiple columns on a single plot or for faceting on categorical, not numerical
 def plot_distributions(dfo, bins=10, binrange=None, outlier_thresh=3,
                        deskew=False, suptitle='', common_fontsize=17, 
                        cols=3, row_height=5, col_width=6, 
                        banner_y=1.08, pad=1.9, kde=False):
+    """
+    Plot histograms for numerical columns in a DataFrame with optional outlier removal and log transformation.
+    
+    Parameters:
+    - dfo: pandas DataFrame, the dataset containing numerical columns for plotting
+    - bins: int or 'auto', number of bins in the histogram (default is 10)
+    - binrange: tuple, range of values for bins (default is None)
+    - outlier_thresh: float, z-score threshold for outlier removal (default is 3)
+    - deskew: bool, whether to apply log transformation (default is False)
+    - suptitle: str, title for the entire plot (default is an empty string)
+    - common_fontsize: int, common font size for the plot (default is 17)
+    - cols: int, number of columns in the subplot grid (default is 3)
+    - row_height: int, height of each row in the subplot grid (default is 5)
+    - col_width: int, width of each column in the subplot grid (default is 6)
+    - banner_y: float, y-coordinate for the suptitle (default is 1.08)
+    - pad: float, padding for the layout (default is 1.9)
+    - kde: bool, whether to plot Kernel Density Estimation (default is False)
+    
+    Returns:
+    - None: The function plots the histograms.
+    """
     from scipy.stats import zscore
     df = dfo.copy().dropna().select_dtypes(include=np.number).replace('\D', '', regex=True).dropna()
     num_df_cols = df.shape[1]
@@ -95,8 +115,24 @@ def plot_distributions(dfo, bins=10, binrange=None, outlier_thresh=3,
 
 
 def plot_percentage_barplots(df, subp_titles, legend_title, figure_title='', target='y', row_height=200):
+    """
+    Create percentage bar plots for each feature in a DataFrame against a target column.
+    
+    Parameters:
+    - df: pandas DataFrame, the dataset containing the features and target
+    - subp_titles: list of str, titles for the subplots
+    - legend_title: str, title for the legend
+    - figure_title: str, title for the entire figure (default is an empty string)
+    - target: str, the target column name (default is 'y')
+    - row_height: int, height of each subplot row (default is 200)
+    
+    Returns:
+    - None: The function shows the plot.
+    """
+    # Extract feature names, removing the target column
     features = df.columns.tolist()
-    features.remove(target)  # Remove the target column from the feature list
+    features.remove(target)  
+    # Determine the number of rows for subplots
     num_rows = len(features)
     colors = {'yes': px.colors.qualitative.Dark24[0], 'no': px.colors.qualitative.Dark24[1]}
 
@@ -134,4 +170,4 @@ def plot_percentage_barplots(df, subp_titles, legend_title, figure_title='', tar
     )
     
     # Show plot
-    fig.show()
+    fig.show('notebook')

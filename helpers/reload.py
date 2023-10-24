@@ -2,38 +2,29 @@ import sys
 sys.path.append('/Users/basilhaddad/jupyter/module17/bank_marketing_repo/')
 from importlib import reload
 
-#from mypackage.module1 import my_function
-# Now you can just use:
-#my_function()
-#or use import mypackge.module1 as mm
-#mm.my_function()
-
-"""
-When we need to update my reload:
-1. Check if it is sys.modules
-
-import sys
-print('helpers.reload' in sys.modules)  # Replace with the actual module name
-
-2. or just restart kernel
-3. ...?
-"""
-
-"""def myreload():
-    import helpers.preprocessing as pp 
-    import helpers.plots as myplt
-    import helpers.tools as tools
-    reload(pp)
-    reload(myplt)
-    reload(tools)
-    print("Reloaded helpers.preprocessing and helpers.plots.")"""
-    
     
 def myreload():
-    global pp, myplt, tools  # Declare as global variables
+    """
+    Reload specific modules from the 'helpers' package.
+    
+    Define variables for modules as Global Variables so they can be accessed outside this function:
+    - reimport: Reloaded 'helpers.my_imports' module
+    - pp: Reloaded 'helpers.preprocessing' module
+    - plot: Reloaded 'helpers.plot' module
+    - tools: Reloaded 'helpers.tools' module
+    
+    Prints:
+    - Confirmation message indicating which modules were reloaded.
+    """
+    # Declare variables for modules as global so they can be accessed outside this function
+    global reimport, pp, plot, tools  # Declare as global variables
+    # Import the specific modules from the 'helpers' package
+    import helpers.my_imports as reimport
     import helpers.preprocessing as pp 
     import helpers.plot as plot
     import helpers.tools as tools
+    # Reload modules
+    reload(reimport)
     reload(pp)
     reload(plot)
     reload(tools)

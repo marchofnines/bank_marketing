@@ -4,9 +4,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from IPython.core.display import display, HTML
 
-def hello_world():
-    print("Hello World")
-    print("Hello world world d ")
 
 def mystats(df, nulls=False):
     unique_counts = []
@@ -41,8 +38,6 @@ def mystats(df, nulls=False):
 #duplicate_rows
 #df_edits = raw.drop_duplicates(inplace=False)
 
-import pandas as pd
-import numpy as np
 
 def calculate_iqr_bounds(df):
     """
@@ -166,6 +161,20 @@ def remove_outliers_based_on_z_scores(df, z_threshold=3):
 
 
 def consolidate_values(df, col, list_of_bad_values, good_value):
+    """
+    Consolidate multiple values in a DataFrame column into a single value.
+    
+    Parameters:
+    - df: pandas DataFrame, the dataset containing the column to be modified
+    - col: str, the name of the column to be modified
+    - list_of_bad_values: list, the values in the column to be replaced
+    - good_value: the value to replace the 'bad' values with
+    
+    Returns:
+    - None: The function modifies the DataFrame in place.
+    """
+    # Use DataFrame.loc to find rows where the column's value is in list_of_bad_values
+    # and replace them with good_value
     df.loc[df[col].isin(list_of_bad_values), col] = good_value #df.col.value_counts().index[0]
 
 
