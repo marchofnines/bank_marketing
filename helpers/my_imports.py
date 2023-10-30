@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from IPython.display import display
 from IPython.core.display import HTML
+from pandas.io.formats.style import Styler
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -32,10 +33,9 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans, DBSCAN
 
-from sklearn.linear_model import LinearRegression, Lasso, HuberRegressor, Ridge
+from sklearn.linear_model import LinearRegression, Lasso, HuberRegressor, Ridge, LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.multiclass import OneVsOneClassifier
-from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier, export_text, plot_tree
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier

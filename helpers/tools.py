@@ -27,6 +27,8 @@ def reorder_cols_in(df, in_str, after=True):
     #group remaining columns
     remaining_cols = [col for col in df.columns if col not in grouped_cols]
     #order column groups
+    
+    #if after, place grouped cols after remaining cols and vice versa
     if after:
         new_col_order = remaining_cols + grouped_cols
     else: 
@@ -192,91 +194,6 @@ def cv_and_holdout(estimator,X, y, test_size=0.27, stratify=None, random_state=4
     return ho_results, best_holdout_estimator
 
 
-# Modify the function to handle the column name issue
-def tune_multiple_imputers(df, imputers, metrics):
-    results = []
-    train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
-    val_df_no_na = val_df.dropna()
-    
-    target_col = 'target'
-    
-    for imputer in imputers:
-        imputer_name = type(imputer).__name__
-        has_transform = hasattr(imputer, "transform")
-        
-        if has_transform:
-            imputer.fit(train_df)
-            imputed_val = imputer.transform(val_df_no_na)
-            imputed_val = pd.DataFrame(imputed_val, columns=val_df_no_na.columns, index=val_df_no_na.index)
-        else:
-            train_no_na = train_df.dropna()
-            X_train = train_no_na.drop(columns=[target_col])
-            y_train = train_no_na[target_col]
-            imputer.fit(X_train, y_train)
-            imputed_val = imputer.predict(val_df_no_na.drop(columns=[target_col]))
-            imputed_val = pd.DataFrame(imputed_val, columns=[target_col], index=val_df_no_na.index)
-        
-        result_row = {'Imputer': imputer_name}
-        
-        for metric in metrics:
-            if metric == 'RMSE':
-                score = np.sqrt(mean_squared_error(val_df_no_na[target_col], imputed_val[target_col]))
-            elif metric == 'MSE':
-                score = mean_squared_error(val_df_no_na[target_col], imputed_val[target_col])
-            elif metric == 'MAE':
-                score = mean_absolute_error(val_df_no_na[target_col], imputed_val[target_col])
-            else:
-                raise ValueError("Invalid metric type. Choose from 'RMSE', 'MSE', 'MAE'")
-            
-            result_row[metric] = score
-        
-        results.append(result_row)
-    
-    results_df = pd.DataFrame(results)
-    results_df = results_df.sort_values(by=metrics, ascending=[True]*len(metrics))
-    return results_df
-
-from sklearn.datasets import make_classification
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-
-
-def did_some_models_converge(search, model_name, params_dict):
-    """
-    Check if the best estimator model converged for all classes.
-    
-    Parameters:
-    - search: Fitted GridSearchCV or RandomizedSearchCV object
-    - model_name: Name of the model (e.g., "Logistic Regression")
-    - params_dict: Dictionary of hyperparameters used in GridSearchCV or RandomizedSearchCV
-    
-    Prints:
-    - Actual number of iterations taken by the best estimator
-    - Maximum allowed iterations
-    - Whether the model converged for all classes or not
-    """
-    
-    # Get the best estimator from the search object
-    best_estimator = search.best_estimator_
-    
-    # Extract the number of iterations taken by the best estimator
-    actual_iterations = best_estimator.named_steps['logistic'].n_iter_
-    
-    # Extract the maximum allowed iterations from params_dict
-    max_iterations = params_dict['logistic__max_iter']
-    
-    # Print the actual and maximum allowed iterations
-    print(f"Actual iterations for best estimator: {actual_iterations}")
-    print(f"Max allowed iterations: {max_iterations}")
-    
-    # Check if the model converged for all classes
-    if all(iter_count <= max(max_iterations) for iter_count in actual_iterations):
-        print("Best model converged for all classes.")
-    else:
-        print("Best model did not converge for some classes.")
-
-
-
 def evaluate_models(models, X_train, y_train, X_test,y_test, transformer=None, scaler=None, selector=None):
     """
     Evaluate one or more machine learning models on given data.
@@ -291,7 +208,7 @@ def evaluate_models(models, X_train, y_train, X_test,y_test, transformer=None, s
     Returns:
     - results_df: DataFrame containing performance metrics.
     """
-    
+    #Define dict of arrays to store results
     results = {
     'Model': [],
     'Train Time': [],
@@ -308,6 +225,7 @@ def evaluate_models(models, X_train, y_train, X_test,y_test, transformer=None, s
     'Test ROC AUC': []
     }
   
+    #If not a dict, make it a dict for uniform processing
     if not isinstance(models, dict):
         models = {
             models.__class__.__name__ : models

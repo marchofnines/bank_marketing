@@ -17,15 +17,13 @@ def myreload():
     - Confirmation message indicating which modules were reloaded.
     """
     # Declare variables for modules as global so they can be accessed outside this function
-    global reimport, pp, plot, tools  # Declare as global variables
+    global reimport, plot, tools  # Declare as global variables
     # Import the specific modules from the 'helpers' package
     import helpers.my_imports as reimport
-    import helpers.preprocessing as pp 
     import helpers.plot as plot
     import helpers.tools as tools
     # Reload modules
     reload(reimport)
-    reload(pp)
     reload(plot)
     reload(tools)
     print("Reloaded helpers.preprocessing, helpers.plots, and helpers.tools.")
