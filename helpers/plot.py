@@ -9,16 +9,6 @@ import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default='notebook'
 
-def dec_boundary_mesh(estimator, X1, y, feature1, feature2):
-    xx = np.linspace(X1.iloc[:, 0].min(), X1.iloc[:, 0].max(), 50)
-    yy = np.linspace(X1.iloc[:, 1].min(), X1.iloc[:, 1].max(), 50)
-    XX, YY = np.meshgrid(xx, yy)
-    grid = np.c_[XX.ravel(), YY.ravel()]
-    labels = pd.factorize(estimator.predict(grid))[0]
-    plt.contourf(xx, yy, labels.reshape(XX.shape), cmap = 'twilight', alpha = 0.6)
-    sns.scatterplot(data = X1, x = feature1, y = feature2, hue = y,  palette = 'flare')
-
-
 def plot_percentage_barplots(df, subp_titles, legend_title, figure_title='', target='y', row_height=200):
     """
     Create percentage bar plots for each feature in a DataFrame against a target column.
