@@ -1,6 +1,13 @@
 # Success of a Contact: Will a client subscribe? 
 [Link to bank_marketing.ipynb Jupyter Notebook](https://github.com/marchofnines/bank_marketing/blob/main/bank_marketing.ipynb)
 
+## PLEASE NOTE
+- The code includes plotly plots that need to be rerun in order be visible 
+- I included a PDF version of the Jupyter Notebook to make it easier to see the plotly plots 
+- **Please scroll to the VERY END of the Jupyter Notebook or PDF past all the gridsearch warnings in order to see the full analysis**
+
+
+
 ## Problem 1: Understanding the Data
 There were 17 different campaigns carried out between May 2008 and November 2010 corresponding to a total of 79354 contacts.   
 
